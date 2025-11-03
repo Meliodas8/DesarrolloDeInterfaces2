@@ -1,4 +1,5 @@
-package com.example.desarrollodeinterfaces2;
+package com.example.desarrollodeinterfaces2.calculadora;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -7,7 +8,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -75,7 +75,7 @@ public class Calculadora extends Application {
             int valor2 = 0;
             String cuenta = "";
             switch (boton.getContentDisplay()){
-                case cero -> textArea.setText("0");
+                //case cero -> textArea.setText("0");
             };
         };
 

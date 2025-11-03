@@ -14,4 +14,8 @@ module com.example.desarrollodeinterfaces2 {
 
     opens com.example.desarrollodeinterfaces2 to javafx.fxml;
     exports com.example.desarrollodeinterfaces2;
+    exports com.example.desarrollodeinterfaces2.prueba;
+    opens com.example.desarrollodeinterfaces2.prueba to javafx.fxml;
+    exports com.example.desarrollodeinterfaces2.calculadora;
+    opens com.example.desarrollodeinterfaces2.calculadora to javafx.fxml;
 }
