@@ -16,16 +16,17 @@ import java.io.IOException;
 
 public class Calculadora extends Application {
 
+    double valor1 = 0;
+    String operador = "";
+    boolean numNuevo = true;
+
     @Override
-    public void start(Stage stage) throws IOException {
-
+    public void start(Stage stage) {
         TextArea textArea = new TextArea();
-
         textArea.setEditable(false);
         textArea.setPrefHeight(25);
 
         Button cero = new Button("0");
-
         Button uno = new Button("1");
         Button dos = new Button("2");
         Button tres = new Button("3");
@@ -69,16 +70,6 @@ public class Calculadora extends Application {
 
         grid.setAlignment(Pos.CENTER);
 
-        EventHandler<ActionEvent> buttonHandler = event -> {
-            Button boton = (Button) event.getSource();
-            int valor1 = 0;
-            int valor2 = 0;
-            String cuenta = "";
-            switch (boton.getContentDisplay()){
-                //case cero -> textArea.setText("0");
-            };
-        };
-
         for (int i = 0; i < 4; i++) {
             javafx.scene.layout.ColumnConstraints col = new javafx.scene.layout.ColumnConstraints();
             col.setPercentWidth(25);
@@ -96,14 +87,69 @@ public class Calculadora extends Application {
             b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         }
 
+        EventHandler<ActionEvent> buttonHandler = event -> {
+            Button boton = (Button) event.getSource();
+            String texto = boton.getText();
+            manejarEntrada(texto, textArea);
+        };
+
+        for (Button b : botones) {
+            b.setOnAction(buttonHandler);
+        }
+
         VBox ventana = new VBox(10);
         ventana.setPadding(new Insets(5));
         ventana.getChildren().addAll(textArea, grid);
         ventana.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(ventana, 320, 240);
-        stage.setTitle("Hello!");
+        stage.setTitle("Calculadora");
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void manejarEntrada(String texto, TextArea textArea) {
+        switch (texto) {
+            case "C":
+                textArea.clear();
+                valor1 = 0;
+                operador = "";
+                numNuevo = true;
+                break;
+            case "+": case "-": case "*": case "/":
+                if(!textArea.getText().isEmpty()) {
+                    valor1 = Double.parseDouble(textArea.getText());
+                    operador = texto;
+                    numNuevo = true;
+                }
+                break;
+            case "=":
+                if (!textArea.getText().isEmpty() && !operador.isEmpty()) {
+                   double valor2 = Double.parseDouble(textArea.getText());
+                   if (operador.equals("/")) {
+                       if (valor2 == 0) {
+                           textArea.setText("¡Error! El segundo valor de una division no puede ser 0");
+                           break;
+                       }
+                   }
+                   double resultado = switch (operador) {
+                       case "+" -> valor1 + valor2;
+                       case "-" -> valor1 - valor2;
+                       case "*" -> valor1 * valor2;
+                       case "/" -> valor1 / valor2;
+                       default -> 0;
+                   };
+                   textArea.setText(String.valueOf(resultado));
+                   numNuevo = true;
+                }
+                break;
+            default:
+                if (numNuevo) {
+                    textArea.setText(texto);
+                    numNuevo = false;
+                } else  {
+                    textArea.appendText(texto);
+                }
+        }
     }
 }
